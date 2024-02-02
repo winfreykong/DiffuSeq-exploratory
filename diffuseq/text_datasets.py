@@ -46,12 +46,12 @@ def load_data_text(
     )
 
     if split != 'test':
-        sampler = DistributedSampler(dataset)
+#         sampler = DistributedSampler(dataset)
         data_loader = DataLoader(
             dataset,
             batch_size=batch_size,  # 20,
             # drop_last=True,
-            sampler=sampler,
+#             sampler=sampler,
             # shuffle=not deterministic,
             num_workers=4,
         )

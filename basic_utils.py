@@ -121,7 +121,6 @@ def create_model_and_diffusion(
     sigma_small,
     rescale_learned_sigmas,
     use_kl,
-    notes,
     **kwargs,
 ):
     model = TransformerNetModel(

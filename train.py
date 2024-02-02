@@ -18,11 +18,6 @@ from basic_utils import (
 )
 from train_util import TrainLoop
 from transformers import set_seed
-import wandb
-
-### custom your wandb setting here ###
-# os.environ["WANDB_API_KEY"] = ""
-os.environ["WANDB_MODE"] = "offline"
 
 def create_argparser():
     defaults = dict()
@@ -34,7 +29,7 @@ def create_argparser():
 def main():
     args = create_argparser().parse_args()
     set_seed(args.seed) 
-    dist_util.setup_dist()
+    dist_util.clear_cache()
     logger.configure()
     logger.log("### Creating data loader...")
 
@@ -79,13 +74,6 @@ def main():
     logger.log(f'### Saving the hyperparameters to {args.checkpoint_path}/training_args.json')
     with open(f'{args.checkpoint_path}/training_args.json', 'w') as f:
         json.dump(args.__dict__, f, indent=2)
-
-    if ('LOCAL_RANK' not in os.environ) or (int(os.environ['LOCAL_RANK']) == 0):
-        wandb.init(
-            project=os.getenv("WANDB_PROJECT", "DiffuSeq"),
-            name=args.checkpoint_path,
-        )
-        wandb.config.update(args.__dict__, allow_val_change=True)
 
     logger.log("### Training...")
 
